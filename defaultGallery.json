@@ -1,0 +1,38 @@
+{
+    "reviews": [
+        {
+            "id": "review-1",
+            "businessName": "Lawrence 24 Hour Door Service",
+            "businessRating": 3.0,
+            "businessReviewCount": 6,
+            "businessUrl": "https://www.yelp.com/biz/lawrence-24-hour-door-service",
+            "reviewerName": "Gina K.",
+            "reviewerPhotoUrl": "https://s3-media0.fl.yelpcdn.com/photo/placeholder_user_60_square.png",
+            "reviewerFriendsCount": 25,
+            "reviewerReviewCount": 4,
+            "rating": 5,
+            "date": "9/4/2014",
+            "text": "After calling around for prices to fix my door I found that Lawrence Doors of Riverside had the best prices and excellent customer service, I called to have my commercial roll up doors repaired and they were able to send some one out within an hour. After assessing the problem, they were able to...",
+            "yelpUrl": "https://www.yelp.com/biz/lawrence-24-hour-door-service",
+            "branch": "Baldwin Park",
+            "featured": true
+        },
+        {
+            "id": "review-2",
+            "businessName": "Lawrence 24 Hour Door Service",
+            "businessRating": 3.0,
+            "businessReviewCount": 6,
+            "businessUrl": "https://www.yelp.com/biz/lawrence-24-hour-door-service",
+            "reviewerName": "Mr. Mansfield G.",
+            "reviewerPhotoUrl": "https://s3-media0.fl.yelpcdn.com/photo/placeholder_user_60_square.png",
+            "reviewerFriendsCount": 0,
+            "reviewerReviewCount": 2,
+            "rating": 5,
+            "date": "7/22/2020",
+            "text": "These guys are great. Had our warehouse broken into and the Rollup door was destroyed. I called Lawrence doors the morning of and they were able to replace the door at a fair price opposed to performing a temp repair and then charging me for a new door as well. Very courteous, polite and profession...",
+            "yelpUrl": "https://www.yelp.com/biz/lawrence-24-hour-door-service",
+            "branch": "Riverside",
+            "featured": false
+        }
+    ]
+}
