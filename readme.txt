@@ -26,14 +26,20 @@ Enspyred Manual Yelp allows you to display Yelp reviews on your WordPress site w
 
 == Installation ==
 
-1. Download the latest release ZIP from GitHub: https://github.com/enspyred/wp-plugin-enspyred-manual-yelp/releases
+= IMPORTANT: Download the Correct ZIP File =
+
+**DO NOT** download the repository ZIP from the main branch! The repository includes development files (node_modules, source code, etc.) totaling ~129MB and will not work properly when installed in WordPress.
+
+**ALWAYS** download the official release ZIP from GitHub Releases. These are clean, production-ready distributions (~2-3MB) that contain only the necessary files.
+
+= Installation Steps =
+
+1. Download the latest **release ZIP** from GitHub: https://github.com/enspyred/enspyred-manual-yelp/releases
 2. Log in to your WordPress admin panel
 3. Navigate to Plugins > Add New > Upload Plugin
-4. Choose the downloaded ZIP file and click "Install Now"
+4. Choose the downloaded release ZIP file and click "Install Now"
 5. Activate the plugin
-6. Go to Enspyred > Yelp Reviews to create your first gallery
-7. Add reviews in JSON format
-8. Use the shortcode `[enspyred_yelp gallery="your-gallery-slug"]` in posts or pages
+6. Configure your Yelp reviews via the plugin settings
 
 == Usage ==
 
