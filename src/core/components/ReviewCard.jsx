@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import StarRating from './StarRating';
+import React from "react";
+import styled from "styled-components";
+import StarRating from "./StarRating";
 
 const Card = styled.div`
     border: 3px solid #d32323;
@@ -155,9 +155,10 @@ const ReviewCard = ({ review }) => {
                     onError={(e) => {
                         // Prevent infinite loop by only setting fallback once
                         if (!e.target.dataset.fallback) {
-                            e.target.dataset.fallback = 'true';
+                            e.target.dataset.fallback = "true";
                             // Use a simple gray placeholder as fallback
-                            e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="60" height="60"%3E%3Crect width="60" height="60" fill="%23ddd"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-family="Arial" font-size="24"%3E%3F%3C/text%3E%3C/svg%3E';
+                            e.target.src =
+                                'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="60" height="60"%3E%3Crect width="60" height="60" fill="%23ddd"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" dy=".3em" fill="%23999" font-family="Arial" font-size="24"%3E%3F%3C/text%3E%3C/svg%3E';
                         }
                     }}
                 />
