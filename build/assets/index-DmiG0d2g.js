@@ -88,6 +88,8 @@ Error generating stack: `+n.message+`
     flex-wrap: wrap;
     gap: 24px;
     margin-top: 20px;
+    max-width: 1140px;
+    margin: 0 auto;
 
     > * {
         /* Mobile: 1 column - full width */
@@ -104,14 +106,14 @@ Error generating stack: `+n.message+`
     @media (min-width: 1600px) {
         > * {
             /* Desktop: 4 columns - fill width */
-            flex: 1 1 calc(25% - 18px);
+            /* flex: 1 1 calc(25% - 18px); */
         }
     }
 
     @media (min-width: 2000px) {
         > * {
             /* Large screen: 5 columns - fill width */
-            flex: 1 1 calc(20% - 19.2px);
+            /* flex: 1 1 calc(20% - 19.2px); */
         }
     }
 `,sS=vn.div`
@@ -119,5 +121,5 @@ Error generating stack: `+n.message+`
     text-align: center;
     color: #666;
     font-size: 16px;
-`,oS=({reviews:u})=>!u||u.length===0?Re.jsx(Wm,{children:Re.jsx(sS,{children:"No reviews available for this gallery."})}):Re.jsx(Wm,{"data-version":"2.0.1",children:Re.jsx(rS,{children:u.map((c,r)=>Re.jsx(fS,{reviewId:c.reviewId,title:c.title},c.reviewId||r))})}),dS=async(u,c,r)=>{var f;try{let o=`reviews?gallery=${encodeURIComponent(u)}`;return c&&(o+=`&branch=${encodeURIComponent(c)}`),r&&(o+=`&limit=${encodeURIComponent(r)}`),(await es.get(o)).data}catch(o){throw new Error(`Reviews load failed (${((f=o.response)==null?void 0:f.status)||"network error"})`)}},Im=()=>{document.querySelectorAll(".enspyred-manual-yelp").forEach(async c=>{if(c.__emy_mounted)return;c.__emy_mounted=!0;const r=c.dataset.emyGallery,f=c.dataset.emyBranch||"",o=c.dataset.emyLimit||"",h=Rp.createRoot(c);h.render(Re.jsx("div",{"aria-live":"polite",children:"Loading reviews…"}));try{const m=await dS(r,f,o);h.render(Re.jsx(oS,{reviews:m.reviews,gallery:r}))}catch(m){Qr(m),h.render(Re.jsxs("div",{"aria-live":"polite",style:{color:"crimson"},children:["Failed to load reviews for gallery: ",r]}))}})};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",Im):Im();
-//# sourceMappingURL=index-D-MQXizP.js.map
+`,oS=({reviews:u})=>!u||u.length===0?Re.jsx(Wm,{children:Re.jsx(sS,{children:"No reviews available for this gallery."})}):Re.jsx(Wm,{"data-version":"2.0.2",children:Re.jsx(rS,{children:u.map((c,r)=>Re.jsx(fS,{reviewId:c.reviewId,title:c.title},c.reviewId||r))})}),dS=async(u,c,r)=>{var f;try{let o=`reviews?gallery=${encodeURIComponent(u)}`;return c&&(o+=`&branch=${encodeURIComponent(c)}`),r&&(o+=`&limit=${encodeURIComponent(r)}`),(await es.get(o)).data}catch(o){throw new Error(`Reviews load failed (${((f=o.response)==null?void 0:f.status)||"network error"})`)}},Im=()=>{document.querySelectorAll(".enspyred-manual-yelp").forEach(async c=>{if(c.__emy_mounted)return;c.__emy_mounted=!0;const r=c.dataset.emyGallery,f=c.dataset.emyBranch||"",o=c.dataset.emyLimit||"",h=Rp.createRoot(c);h.render(Re.jsx("div",{"aria-live":"polite",children:"Loading reviews…"}));try{const m=await dS(r,f,o);h.render(Re.jsx(oS,{reviews:m.reviews,gallery:r}))}catch(m){Qr(m),h.render(Re.jsxs("div",{"aria-live":"polite",style:{color:"crimson"},children:["Failed to load reviews for gallery: ",r]}))}})};document.readyState==="loading"?document.addEventListener("DOMContentLoaded",Im):Im();
+//# sourceMappingURL=index-DmiG0d2g.js.map

@@ -15,6 +15,8 @@ const ReviewsGrid = styled.div`
     flex-wrap: wrap;
     gap: 24px;
     margin-top: 20px;
+    max-width: 1140px;
+    margin: 0 auto;
 
     > * {
         /* Mobile: 1 column - full width */
@@ -31,14 +33,14 @@ const ReviewsGrid = styled.div`
     @media (min-width: 1600px) {
         > * {
             /* Desktop: 4 columns - fill width */
-            flex: 1 1 calc(25% - 18px);
+            /* flex: 1 1 calc(25% - 18px); */
         }
     }
 
     @media (min-width: 2000px) {
         > * {
             /* Large screen: 5 columns - fill width */
-            flex: 1 1 calc(20% - 19.2px);
+            /* flex: 1 1 calc(20% - 19.2px); */
         }
     }
 `;
