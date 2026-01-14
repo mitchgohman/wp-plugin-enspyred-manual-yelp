@@ -4,10 +4,8 @@
 function emy_admin_galleries_router() {
     $tab = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'galleries';
 
-    // Handle form submissions
-    if ($_POST && isset($_POST['emy_nonce']) && wp_verify_nonce(wp_unslash($_POST['emy_nonce']), 'emy_admin')) {
-        emy_handle_admin_form_submission();
-    }
+    // Form submissions are now handled in admin_init hook (see inc/menus.php)
+    // This ensures redirects happen before any output
 
     // Check if we're editing a specific gallery
     $editing_gallery = isset($_GET['edit']) ? sanitize_text_field(wp_unslash($_GET['edit'])) : null;
@@ -67,29 +65,88 @@ function emy_handle_admin_form_submission() {
         case 'update_gallery':
             $gallery_slug = isset($_POST['gallery_slug']) ? sanitize_text_field(wp_unslash($_POST['gallery_slug'])) : '';
             $gallery_name = isset($_POST['gallery_name']) ? sanitize_text_field(wp_unslash($_POST['gallery_name'])) : '';
-            $config_json = isset($_POST['gallery_config']) ? wp_unslash($_POST['gallery_config']) : '';
 
-            if ($gallery_slug) {
-                // Validate JSON
-                $decoded = json_decode($config_json, true);
-                if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
-                    // Update config
-                    emy_update_gallery_config($gallery_slug, $config_json);
-
-                    // Update name if changed
-                    if (!empty($gallery_name)) {
-                        $new_slug = emy_update_gallery_name($gallery_slug, $gallery_name);
-                        if ($new_slug && $new_slug !== $gallery_slug) {
-                            // Redirect to new slug
-                            wp_safe_redirect(admin_url('admin.php?page=enspyred-manual-yelp&edit=' . $new_slug . '&updated=1'));
-                            exit;
-                        }
-                    }
-
-                    add_settings_error('emy_admin', 'gallery_updated', 'Gallery updated successfully.', 'updated');
-                } else {
-                    add_settings_error('emy_admin', 'invalid_json', 'Invalid JSON. Please check your syntax.', 'error');
+            if ($gallery_slug && !empty($gallery_name)) {
+                // Update gallery name
+                $new_slug = emy_update_gallery_name($gallery_slug, $gallery_name);
+                if ($new_slug && $new_slug !== $gallery_slug) {
+                    // Redirect to new slug
+                    wp_safe_redirect(admin_url('admin.php?page=enspyred-manual-yelp&edit=' . $new_slug . '&updated=1'));
+                    exit;
                 }
+                add_settings_error('emy_admin', 'gallery_updated', 'Gallery updated successfully.', 'updated');
+            }
+            break;
+
+        case 'add_review':
+            $gallery_slug = isset($_POST['gallery_slug']) ? sanitize_text_field(wp_unslash($_POST['gallery_slug'])) : '';
+            $review_title = isset($_POST['review_title']) ? sanitize_text_field(wp_unslash($_POST['review_title'])) : '';
+            $review_id = isset($_POST['review_id']) ? sanitize_text_field(wp_unslash($_POST['review_id'])) : '';
+
+            if ($gallery_slug && !empty($review_title) && !empty($review_id)) {
+                // Validate Review ID format
+                if (!emy_validate_review_id($review_id)) {
+                    add_settings_error('emy_admin', 'invalid_review_id', 'Invalid Review ID format. Only alphanumeric characters, hyphens, and underscores are allowed.', 'error');
+                } else {
+                    // Add review
+                    emy_add_review_to_gallery($gallery_slug, $review_title, $review_id);
+                    add_settings_error('emy_admin', 'review_added', 'Review added successfully.', 'updated');
+
+                    // Redirect to refresh page
+                    wp_safe_redirect(admin_url('admin.php?page=enspyred-manual-yelp&edit=' . $gallery_slug . '&updated=1'));
+                    exit;
+                }
+            }
+            break;
+
+        case 'update_review':
+            $gallery_slug = isset($_POST['gallery_slug']) ? sanitize_text_field(wp_unslash($_POST['gallery_slug'])) : '';
+            $review_index = isset($_POST['review_index']) ? intval(wp_unslash($_POST['review_index'])) : -1;
+            $review_title = isset($_POST['review_title']) ? sanitize_text_field(wp_unslash($_POST['review_title'])) : '';
+            $review_id = isset($_POST['review_id']) ? sanitize_text_field(wp_unslash($_POST['review_id'])) : '';
+
+            if ($gallery_slug && $review_index >= 0 && !empty($review_title) && !empty($review_id)) {
+                // Validate Review ID format
+                if (!emy_validate_review_id($review_id)) {
+                    add_settings_error('emy_admin', 'invalid_review_id', 'Invalid Review ID format. Only alphanumeric characters, hyphens, and underscores are allowed.', 'error');
+                    // Don't exit - let page render with error
+                    break;
+                }
+
+                // Update review
+                emy_update_review_in_gallery($gallery_slug, $review_index, $review_title, $review_id);
+
+                // Redirect to refresh page (without edit_review parameter)
+                wp_safe_redirect(admin_url('admin.php?page=enspyred-manual-yelp&edit=' . $gallery_slug . '&updated=1'));
+                exit;
+            }
+            break;
+
+        case 'delete_review':
+            $gallery_slug = isset($_POST['gallery_slug']) ? sanitize_text_field(wp_unslash($_POST['gallery_slug'])) : '';
+            $review_index = isset($_POST['review_index']) ? intval(wp_unslash($_POST['review_index'])) : -1;
+
+            if ($gallery_slug && $review_index >= 0) {
+                emy_delete_review_from_gallery($gallery_slug, $review_index);
+                add_settings_error('emy_admin', 'review_deleted', 'Review deleted successfully.', 'updated');
+
+                // Redirect to refresh page
+                wp_safe_redirect(admin_url('admin.php?page=enspyred-manual-yelp&edit=' . $gallery_slug . '&updated=1'));
+                exit;
+            }
+            break;
+
+        case 'reorder_review':
+            $gallery_slug = isset($_POST['gallery_slug']) ? sanitize_text_field(wp_unslash($_POST['gallery_slug'])) : '';
+            $review_index = isset($_POST['review_index']) ? intval(wp_unslash($_POST['review_index'])) : -1;
+            $direction = isset($_POST['direction']) ? sanitize_text_field(wp_unslash($_POST['direction'])) : '';
+
+            if ($gallery_slug && $review_index >= 0 && in_array($direction, ['up', 'down'])) {
+                emy_reorder_review_in_gallery($gallery_slug, $review_index, $direction);
+
+                // Redirect to refresh page
+                wp_safe_redirect(admin_url('admin.php?page=enspyred-manual-yelp&edit=' . $gallery_slug));
+                exit;
             }
             break;
 

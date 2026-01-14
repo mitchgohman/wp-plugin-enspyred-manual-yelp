@@ -11,7 +11,6 @@ add_action('rest_api_init', function () {
 
 function emy_api_get_reviews($request) {
     $gallery = $request->get_param('gallery');
-    $branch = $request->get_param('branch');
     $limit = $request->get_param('limit');
 
     if (empty($gallery)) {
@@ -27,14 +26,12 @@ function emy_api_get_reviews($request) {
 
     $reviews = $config['reviews'];
 
-    // Filter by branch if specified
-    if (!empty($branch)) {
-        $reviews = array_filter($reviews, function($review) use ($branch) {
-            return isset($review['branch']) && $review['branch'] === $branch;
-        });
-        // Re-index array
-        $reviews = array_values($reviews);
-    }
+    // Sort by order field
+    usort($reviews, function($a, $b) {
+        $orderA = isset($a['order']) ? intval($a['order']) : 0;
+        $orderB = isset($b['order']) ? intval($b['order']) : 0;
+        return $orderA - $orderB;
+    });
 
     // Apply limit if specified
     if (!empty($limit) && is_numeric($limit)) {

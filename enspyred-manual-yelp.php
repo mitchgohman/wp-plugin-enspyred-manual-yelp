@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: Enspyred Manual Yelp
-Description: Display manually curated Yelp reviews via shortcodes with React UI.
-Version: 1.0.4
+Description: Display Yelp review embeds via shortcodes with React UI.
+Version: 2.0.0
 Author: Enspyred
 Author URI: https://enspyred.com
 License: GPL v2 or later
